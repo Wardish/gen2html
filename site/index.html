@@ -2,10 +2,7 @@
   <body>
     <h1>Vue&nbsp;Sample</h1>
     <div id="app">
-      <v-checkbox
-        label="選択肢"
-        v-model="isActive"
-      ></v-checkbox>
+      <label><input type="checkbox" v-model="isActive" />Check</label>
       <button type="button" :disabled="isActive">
         押せる？
       </button>
