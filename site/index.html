@@ -2,6 +2,10 @@
   <body>
     <h1>Vue&nbsp;Sample</h1>
     <div id="app">
+      <v-checkbox
+        label="選択肢"
+        v-model="isActive"
+      ></v-checkbox>
       <button type="button" :disabled="isActive">
         押せる？
       </button>
@@ -9,7 +13,7 @@
   </body>
 </html>
 <script type="module">
-  import { createApp } from "https://unpkg.com/vue@3.2.4/dist/vue.esm-browser.prod.js";
+  import { createApp, ref } from "https://unpkg.com/vue@3.2.4/dist/vue.esm-browser.prod.js";
   const app = createApp({
     setup() {
       const isActive = ref(false);
