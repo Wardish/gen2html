@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <style type="text/css">
+      [v-cloak] {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Vue&nbsp;Sample2</h1>
+    <div id="app">
+      <label><input type="checkbox" v-model="isActive" />Check</label>
+      <button type="button" :disabled="isActive">
+        押せる????
+      </button>
+      <input  v-model="title" />
+      <hr/>
+      <div>
+        <li v-for="item in sampleList" v-cloak>
+          {{item.title}}
+        </li>
+      </div>
+    </div>
+  </body>
+</html>
+<script src="https://unpkg.com/microcms-js-sdk@latest/dist/umd/microcms-js-sdk.js"></script>
+<script type="module">
+  import { createApp, ref, watch, watchEffect, onMounted, onUnmounted  } from "https://unpkg.com/vue@3.2.4/dist/vue.esm-browser.prod.js";
+  const { createClient } = microcms;
+
+  const useSampleList = (title) => {
+    const sampleList = ref([]);
+    const isLoading = ref(false);
+
+    const client = createClient({
+        serviceDomain: 'wr2c4rov8k',
+        apiKey: import.meta.env.VITE_MICROCMS_API_KEY,
+      });
+    
+    const reload = async () => {
+      console.log(import.meta.env);
+      const queries = {};
+
+      if (title?.value) {
+        queries['filters'] = {q: title.value};
+      }
+
+      isLoading.value = true;
+      const result = await client.getList({
+        endpoint: 'samples',
+        contentId: 'v45kcu22g',
+        queries,
+      });
+
+      if (result?.contents) {
+        sampleList.value.push(...result.contents);
+      }
+      console.log(sampleList.value);
+      isLoading.value = false;
+    };
+
+    watchEffect(() => {
+      sampleList.value.splice(0);
+      reload();
+    });
+
+    return {
+      isLoading,
+      sampleList,
+    }
+  };
+
+  const app = createApp({
+    setup() {
+      console.log('setup');
+
+      const isActive = ref(false);
+
+      const title = ref('');
+
+      const { sampleList } = useSampleList(title);
+
+      return {
+        title,
+        isActive,
+        sampleList,
+      };
+    },
+  })
+  app.mount("#app")
+</script>
