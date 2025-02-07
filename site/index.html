@@ -1,5 +1,21 @@
 <html>
   <body>
-    OK
+    <h1>Vue&nbsp;Sample</h1>
+    <div id="app">
+      <button type="button" :disabled="isActive">
+        押せる？
+      </button>
+    </div>
   </body>
 </html>
+<script type="module">
+  import { createApp } from "https://unpkg.com/vue@3.2.4/dist/vue.esm-browser.prod.js";
+  const app = createApp({
+    setup() {
+      const isActive = ref(false);
+
+      return { isActive };
+    }
+  })
+  app.mount("#app")
+</script>
